@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta http-equiv="Content-Type" Content="text/html; charset=utf-8" />
+        <meta name="viewport" content="height=1080, width=1920, user-scalable=no" />
+
+        <style type ="text/css">
+            body {
+                background-color: white;
+            }
+            </style>
+            
+        <!-- GIGA Genie js-->   
+        <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
+
+        <!-- for playing flash-->    
+        <!-- <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+        <script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
+        <script src="https://vjs.zencdn.net/7.2.3/video.js"></script> -->
+
+
+        <script type="text/javascript">
+            
+            var options = {};
+
+            // GIGA Genie 초기화
+            function init() {
+                options = {};
+                options.apikey = "VDUwMDI0OTd8R0JPWERFVk18MTU0MzM4MjU1OTY3Mg==";  //개발자 Api Key
+                options.keytype = "GBOXDEVM";                                     //개발자모드 (GBOXDEVM, GBOXCOMM)
+
+                //init
+                gigagenie.init(options,function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        alert('Initialize Success');
+                        //window.setInterval(getVoice, 2000);
+                    };
+                });
+            }
+
+            // 서비스 종료 명령 수신 API
+            gigagenie.voice.onRequestClose = function(){
+                options = {};
+
+                gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        console.log('Finish Service');
+                    };
+                });
+            };
+
+            // 발화 이벤트
+            gigagenie.voice.onActionEvent = function(extra){
+                var word = extra.uword;
+                var code = extra.actioncode;
+                var path = extra.actionpath;
+
+                alert('발화 이벤트 uword = ' + extra.uword + ', code = ' + extra.actioncode + ', path = ' + extra.actionpath);
+
+                switch(code){
+                    case 'MainPage':
+                        //location.href="./ResortMain.html";
+                    break;
+                    case 'SubPage':
+                        location.href="./ResortSub.html";
+                    break;
+                }
+            }
+
+            // 입력한 내용 읽어주고 답변 받기
+            function readText() {                 
+                options = {};
+                options.voicemsg = '리조트 테스트를 진행중입니다. 음성인식을 시작합니다.';
+
+                // 입력 내용 재생 후 음성인식
+                gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        alert('Received Text is ' + extra.voicetext);
+                        document.getElementById('txt_voice').innerText = '음성인식 결과 : ' + extra.voicetext;
+                    }
+                });
+            }
+
+            // 음성인식 종료
+            function stopTTS() {
+                options = {};
+
+                gigagenie.voice.stopTTS(options, function(result_cd, result_msg, extra) {
+                    if (result_cd==200) {
+                        alert('stopTTS');
+                    }
+                });
+            }
+
+            function goSubPage() {
+                location.href="./ResortSub.html";
+            }
+
+            function goPage(page) {
+                switch(page) {
+                    case 0: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8';    break;  //웹캠 - 스키장 전경
+                    case 1: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch5.stream/playlist.m3u8';    break;  //웹캠 - A슬로프
+                    case 2: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch6.stream/playlist.m3u8';    break;  //웹캠 - B슬로프
+                    case 3: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch7.stream/playlist.m3u8';    break;  //웹캠 - G슬로프
+                    case 4: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch2.stream/playlist.m3u8';    break;  //웹캠 - I슬로프
+                    case 5: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch4.stream/playlist.m3u8';    break;  //웹캠 - 수영장
+                    case 6: location.href='https://www.oakvalley.co.kr/oak_new/condofood_golf.asp';  break;  //편의/부대시설 - 골프빌리지 타입
+                    case 7: location.href='https://www.oakvalley.co.kr/oak_new/condofood_ski.asp';   break;  //편의/부대시설 - 스키빌리지 타입
+                    case 8: location.href='https://www.oakvalley.co.kr/oak_new/rtsp.asp?ch=9';   break;  //웹캠 - 스키장 전경 html 페이지
+                }
+            }
+            // 리모콘 키 이벤트
+            // gigagenie.media.onRemoteKeyEvent = function(extra){                        
+            //     alert('Getting onRemoteKeyEvent ' + extra.key);
+            // };
+
+            function getContainerId() {
+                var options={};
+                gigagenie.appinfo.getContainerId(options,function(result_cd,result_msg,extra){
+                    if(result_cd===200){
+                        alert("The container id is " + extra.containerid);
+                    } else {
+                        alert("getContainerId is fail.");
+                    }
+                });
+            }
+
+            function getAuthKey() {
+                var options={};
+                gigagenie.appinfo.getAuthKey(options,function(result_cd,result_msg,extra){
+                    if(result_cd===200){
+                        alert("Key value is " + extra.authkey + ", SetTime value is " + extra.settime +", DueTime value is " + extra.duetime);
+                    } else if(result_cd===404){
+                        alert("Key is not set.");
+                    } else {
+                        alert("getAuthKey is fail.");
+                    }
+                });
+            }
+
+            var dialog = document.querySelector('dialog'); 
+            document.querySelector('#show').onclick = function() { 
+                dialog.show(); 
+            }; 
+            document.querySelector('#close').onclick = function() { 
+                dialog.close(); 
+            }; 
+
+        </script>
+    </head>
+
+    <body onload = init()>
+
+        <br><br>
+        <center>
+            <h1>리조트 테스트페이지</h1><br>
+            <input type='submit' value='goSubPage()' id='btn_get_remote' onclick='goSubPage()'><br><br>
+
+            <p>[테스트] 버튼 클릭시 음성인식</p><br>
+            <input type='submit' value='readText()' id='btn_read_text' onclick='readText()'><br><br>
+            <div id="txt_voice" style="height: 50px; text-align: center;z-index:1">음성인식 결과</div>
+            <br><br>
+            <input type='submit' value='getContainerId()' id='btn_read_text' onclick='getContainerId()'><br><br>
+            <input type='submit' value='getAuthKey()' id='btn_read_text' onclick='getAuthKey()'><br><br>
+            <!-- 
+            <p>[테스트2] 버튼 클릭시 리모콘인식</p><br>
+            <input type='submit' value='getRemote()' id='btn_get_remote' onclick='getRemote()'><br><br>
+            <br><br> -->
+
+            <p>[테스트] 대명 제공 URL</p><br>
+            <input type='submit' value='웹캠 - 스키장 전경' onclick='goPage(0)'><br><br>
+            <input type='submit' value='웹캠 - A슬로프' onclick='goPage(1)'><br><br>
+            <input type='submit' value='웹캠 - B슬로프' onclick='goPage(2)'><br><br>
+            <input type='submit' value='웹캠 - G슬로프' onclick='goPage(3)'><br><br>
+            <input type='submit' value='웹캠 - I슬로프' onclick='goPage(4)'><br><br>
+            <input type='submit' value='웹캠 - 수영장' onclick='goPage(5)'><br><br>
+            <input type='submit' value='편의/부대시설 - 골프빌리지' onclick='goPage(6)'><br><br>
+            <input type='submit' value='편의/부대시설 - 스키빌리지' onclick='goPage(7)'><br><br>
+            <input type='submit' value='스키장 전경 html 페이지' onclick='goPage(8)'><br><br>
+
+            <p>[테스트] 웹캠 embed 1</p><br>
+            <embed src="https://www.oakvalley.co.kr/oak_new/rtsp.asp?ch=9" width="640" height="360" allowfullscreen=""><br>
+
+            <p>[테스트] 웹캠 embed 2</p><br>
+            <embed src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" width="640" height="360" allowfullscreen=""><br>
+
+            <p>[테스트] 웹캠 embed 3</p><br>
+            <video width="640" height="360" controls autoplay="true" >
+                <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type="application/x-mpegURL">
+            </video>
+            <br>
+
+            <button id="show">Show Me the Dialog!</button> <br><br>
+            <dialog> 
+                <p>This is an HTML dialog! Click the button to close it.</p> 
+                <button id="close">Close Dialog</button> 
+            </dialog> 
+    
+            <br>
+            <!-- <video id='hls-example'  class="video-js vjs-default-skin" width="400" height="300" controls>
+                <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type=“application/x-mpegURL”>
+            </video> -->
+
+            <p>[테스트] 리모콘 포커싱</p><br>
+            <iframe src="https://www.oakvalley.co.kr/oak_new/condofood_ski.asp" width="1200" height="1000">
+            
+        </center>
+    </body>
+</html>
