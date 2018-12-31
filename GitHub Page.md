@@ -4,4 +4,4 @@
 2. 깃 클론 git clone https://github.com/redbeanv/redbeanv.github.io
 3. 필요한 파일 생성후 커밋 및 푸시 (git push)
 
-http://blog.saltfactory.net/create-personal-web-site-using-with-github-pages/
+http://blog.saltfactory.net/create-personal-web-site-using-with-github-pages/₩`
