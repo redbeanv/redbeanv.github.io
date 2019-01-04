@@ -111,9 +111,9 @@
                 }
             }
             // 리모콘 키 이벤트
-            // gigagenie.media.onRemoteKeyEvent = function(extra){                        
-            //     alert('Getting onRemoteKeyEvent ' + extra.key);
-            // };
+            gigagenie.media.onRemoteKeyEvent = function(extra){                        
+                document.getElementById('txt_voice').innerText = extra;
+            };
 
             function getContainerId() {
                 var options={};
@@ -149,6 +149,11 @@
 
         </script>
     </head>
+    <style>
+        * {
+            margin: 0;
+        }
+    </style>
 
     <body onload = init()>
 
@@ -190,13 +195,14 @@
                 <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type="application/x-mpegURL">
             </video>
             <br> -->
+            <div>key : 
+                <p id="remoteKey"></p>
+            </div>
 
             <video width="1920" height="1080" controls autoplay="true" >
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
                 <p>Dont play this vedio.</p>
             </video>
-            
-        
 
             <!-- <button id="show">Show Me the Dialog!</button> <br><br>
             <dialog> 
