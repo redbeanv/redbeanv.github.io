@@ -112,7 +112,7 @@
             }
             // 리모콘 키 이벤트
             gigagenie.media.onRemoteKeyEvent = function(extra){                        
-                document.getElementById('remoteKey').innerText = extra;
+                document.getElementById('remoteKey').innerText = extra.key;
             };
 
             function getContainerId() {
