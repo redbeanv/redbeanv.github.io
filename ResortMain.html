@@ -8,18 +8,14 @@
             body {
                 background-color: white;
             }
-            </style>
+
+            * {
+            margin: 0;
+            }
+        </style>
             
         <!-- GIGA Genie js-->   
         <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
-
-
-        <!-- for playing flash-->    
-        <!-- <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
-        <script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
-        <script src="https://vjs.zencdn.net/7.2.3/video.js"></script> -->
-
 
         <script type="text/javascript">
             
@@ -160,54 +156,8 @@
 
         </script>
     </head>
-    <style>
-        * {
-            margin: 0;
-        }
-    </style>
 
     <body onload = init()>
-
-        <!-- <br><br>
-        <center>
-            <h1>리조트 테스트페이지</h1><br>
-            <input type='submit' value='goSubPage()' id='btn_get_remote' onclick='goSubPage()'><br><br>
-
-            <p>[테스트] 버튼 클릭시 음성인식</p><br>
-            <input type='submit' value='readText()' id='btn_read_text' onclick='readText()'><br><br>
-            <div id="txt_voice" style="height: 50px; text-align: center;z-index:1">음성인식 결과</div>
-            <br><br>
-            <input type='submit' value='getContainerId()' id='btn_read_text' onclick='getContainerId()'><br><br>
-            <input type='submit' value='getAuthKey()' id='btn_read_text' onclick='getAuthKey()'><br><br> -->
-            <!-- 
-            <p>[테스트2] 버튼 클릭시 리모콘인식</p><br>
-            <input type='submit' value='getRemote()' id='btn_get_remote' onclick='getRemote()'><br><br>
-            <br><br> -->
-
-            <!-- <p>[테스트] 대명 제공 URL</p><br>
-            <input type='submit' value='웹캠 - 스키장 전경' onclick='goPage(0)'><br><br>
-            <input type='submit' value='웹캠 - A슬로프' onclick='goPage(1)'><br><br>
-            <input type='submit' value='웹캠 - B슬로프' onclick='goPage(2)'><br><br>
-            <input type='submit' value='웹캠 - G슬로프' onclick='goPage(3)'><br><br>
-            <input type='submit' value='웹캠 - I슬로프' onclick='goPage(4)'><br><br>
-            <input type='submit' value='웹캠 - 수영장' onclick='goPage(5)'><br><br>
-            <input type='submit' value='편의/부대시설 - 골프빌리지' onclick='goPage(6)'><br><br>
-            <input type='submit' value='편의/부대시설 - 스키빌리지' onclick='goPage(7)'><br><br>
-            <input type='submit' value='스키장 전경 html 페이지' onclick='goPage(8)'><br><br> -->
-
-            <!-- <p>[테스트] 웹캠 embed 1</p><br>
-            <embed src="https://www.oakvalley.co.kr/oak_new/rtsp.asp?ch=9" width="640" height="360" allowfullscreen=""><br>
-
-            <p>[테스트] 웹캠 embed 2</p><br>
-            <embed src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" width="640" height="360" allowfullscreen=""><br>
-
-            <p>[테스트] 웹캠 embed 3</p><br>
-            <video width="640" height="360" controls autoplay="true" >
-                <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type="application/x-mpegURL">
-            </video>
-            <br> -->
-            
-
             <!-- <video width="1920" height="1080" controls autoplay="true" >-->
             <video width="1280" height="720" controls autoplay="true" >
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
@@ -222,21 +172,6 @@
             </div>
             <div>발화: <p id="action"></p>
             </div>
-
-            <!-- <button id="show">Show Me the Dialog!</button> <br><br>
-            <dialog> 
-                <p>This is an HTML dialog! Click the button to close it.</p> 
-                <button id="close">Close Dialog</button> 
-            </dialog> 
-    
-            <br> -->
-            <!-- <video id='hls-example'  class="video-js vjs-default-skin" width="400" height="300" controls>
-                <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type=“application/x-mpegURL”>
-            </video> -->
-
-            <!-- <p>[테스트] 리모콘 포커싱</p><br>
-            <iframe src="https://www.oakvalley.co.kr/oak_new/condofood_ski.asp" width="1200" height="1000"> -->
             
-        </center>
     </body>
 </html>
