@@ -13,6 +13,7 @@
         <!-- GIGA Genie js-->   
         <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
 
+
         <!-- for playing flash-->    
         <!-- <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
         <script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
@@ -32,8 +33,10 @@
 
                 //init
                 gigagenie.init(options,function(result_cd, result_msg, extra){
+                    document.getElementById('log').innerHTML = result_cd
                     if(result_cd === 200){
-                        alert('Initialize Success');
+                        document.getElementById('log').innerHTML = 'init';
+                        //alert('Initialize Success');
                         //window.setInterval(getVoice, 2000);
                     };
                 });
@@ -56,17 +59,28 @@
                 var code = extra.actioncode;
                 var path = extra.actionpath;
 
-                alert('발화 이벤트 uword = ' + extra.uword + ', code = ' + extra.actioncode + ', path = ' + extra.actionpath);
+                document.getElementById('action').innerHTML('발화 이벤트 uword = ' + extra.uword + ', code = ' + extra.actioncode + ', path = ' + extra.actionpath);
 
-                switch(code){
-                    case 'MainPage':
-                        //location.href="./ResortMain.html";
-                    break;
-                    case 'SubPage':
-                        location.href="./ResortSub.html";
-                    break;
-                }
+                // switch(code){
+                //     case 'MainPage':
+                //         //location.href="./ResortMain.html";
+                //     break;
+                //     case 'SubPage':
+                //         location.href="./ResortSub.html";
+                //     break;
+                // }
             }
+
+            gigagenie.media.onRemoteKeyEvent = function(extra){
+                document.getElementById('remoteKey').innerText = extra.key;
+            };
+
+            // 리모콘 키 이벤트
+            // function keyEvent(){
+            //     gigagenie.media.onRemoteKeyEvent = function(extra){
+            //         document.getElementById('remoteKey').innerText = extra.key;
+            //     };
+            // }
 
             // 입력한 내용 읽어주고 답변 받기
             function readText() {                 
@@ -110,11 +124,8 @@
                     case 8: location.href='https://www.oakvalley.co.kr/oak_new/rtsp.asp?ch=9';   break;  //웹캠 - 스키장 전경 html 페이지
                 }
             }
-            // 리모콘 키 이벤트
-            gigagenie.media.onRemoteKeyEvent = function(extra){                        
-                document.getElementById('remoteKey').innerText = extra.key;
-            };
-
+           
+            
             function getContainerId() {
                 var options={};
                 gigagenie.appinfo.getContainerId(options,function(result_cd,result_msg,extra){
@@ -195,14 +206,22 @@
                 <source src="https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8" type="application/x-mpegURL">
             </video>
             <br> -->
+            
+
+            <!-- <video width="1920" height="1080" controls autoplay="true" >-->
+            <video width="1280" height="720" controls autoplay="true" >
+                <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
+                <p>Dont play this vedio.</p>
+            </video>
+
             <div>key : 
                 <p id="remoteKey"></p>
             </div>
 
-            <video width="1920" height="1080" controls autoplay="true" >
-                <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
-                <p>Dont play this vedio.</p>
-            </video>
+            <div>log: <p id="log"></p>
+            </div>
+            <div>발화: <p id="action"></p>
+            </div>
 
             <!-- <button id="show">Show Me the Dialog!</button> <br><br>
             <dialog> 
