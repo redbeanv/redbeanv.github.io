@@ -10,7 +10,7 @@
             }
 
             * {
-            margin: 0;
+                margin: 0;
             }
         </style>
             
@@ -29,11 +29,10 @@
 
                 //init
                 gigagenie.init(options,function(result_cd, result_msg, extra){
-                    document.getElementById('log').innerHTML = result_cd
                     if(result_cd === 200){
-                        document.getElementById('log').innerHTML = 'init';
-                        //alert('Initialize Success');
-                        //window.setInterval(getVoice, 2000);
+                        options.voicemsg = '기가지니 초기화에 성공했습니다.';
+                        gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                        });
                     };
                 });
             }
@@ -41,7 +40,6 @@
             // 서비스 종료 명령 수신 API
             gigagenie.voice.onRequestClose = function(){
                 options = {};
-
                 gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
                     if(result_cd === 200){
                         console.log('Finish Service');
@@ -49,129 +47,39 @@
                 });
             };
 
-            // 발화 이벤트
-            gigagenie.voice.onActionEvent = function(extra){
-                var word = extra.uword;
-                var code = extra.actioncode;
-                var path = extra.actionpath;
-
-                document.getElementById('action').innerHTML('발화 이벤트 uword = ' + extra.uword + ', code = ' + extra.actioncode + ', path = ' + extra.actionpath);
-
-                // switch(code){
-                //     case 'MainPage':
-                //         //location.href="./ResortMain.html";
-                //     break;
-                //     case 'SubPage':
-                //         location.href="./ResortSub.html";
-                //     break;
-                // }
-            }
-
             gigagenie.media.onRemoteKeyEvent = function(extra){
-                document.getElementById('remoteKey').innerText = extra.key;
+                options.voicemsg = extra.key;
+                gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                });
             };
 
-            // 리모콘 키 이벤트
-            // function keyEvent(){
-            //     gigagenie.media.onRemoteKeyEvent = function(extra){
-            //         document.getElementById('remoteKey').innerText = extra.key;
-            //     };
-            // }
-
             // 입력한 내용 읽어주고 답변 받기
-            function readText() {                 
-                options = {};
-                options.voicemsg = '리조트 테스트를 진행중입니다. 음성인식을 시작합니다.';
-
-                // 입력 내용 재생 후 음성인식
-                gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
-                    if(result_cd === 200){
-                        alert('Received Text is ' + extra.voicetext);
-                        document.getElementById('txt_voice').innerText = '음성인식 결과 : ' + extra.voicetext;
-                    }
-                });
-            }
-
-            // 음성인식 종료
-            function stopTTS() {
+            function controleVideo() {                 
                 options = {};
 
-                gigagenie.voice.stopTTS(options, function(result_cd, result_msg, extra) {
-                    if (result_cd==200) {
-                        alert('stopTTS');
-                    }
-                });
-            }
-
-            function goSubPage() {
-                location.href="./ResortSub.html";
-            }
-
-            function goPage(page) {
-                switch(page) {
-                    case 0: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch9.stream/playlist.m3u8';    break;  //웹캠 - 스키장 전경
-                    case 1: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch5.stream/playlist.m3u8';    break;  //웹캠 - A슬로프
-                    case 2: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch6.stream/playlist.m3u8';    break;  //웹캠 - B슬로프
-                    case 3: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch7.stream/playlist.m3u8';    break;  //웹캠 - G슬로프
-                    case 4: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch2.stream/playlist.m3u8';    break;  //웹캠 - I슬로프
-                    case 5: location.href='https://oak2.ktcdn.co.kr/cctv/_definst_/ch4.stream/playlist.m3u8';    break;  //웹캠 - 수영장
-                    case 6: location.href='https://www.oakvalley.co.kr/oak_new/condofood_golf.asp';  break;  //편의/부대시설 - 골프빌리지 타입
-                    case 7: location.href='https://www.oakvalley.co.kr/oak_new/condofood_ski.asp';   break;  //편의/부대시설 - 스키빌리지 타입
-                    case 8: location.href='https://www.oakvalley.co.kr/oak_new/rtsp.asp?ch=9';   break;  //웹캠 - 스키장 전경 html 페이지
+                var myVideo = document.getElementById("video"); 
+                if (myVideo.paused) { 
+                    options.voicemsg = '동영상 플레이어를 시작합니다';
+                    myVideo.play(); 
+                    gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
+                }  else { 
+                    options.voicemsg = '동영상 플레이어를 멈춥니다';
+                    myVideo.pause(); 
+                    gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
                 }
             }
-           
-            
-            function getContainerId() {
-                var options={};
-                gigagenie.appinfo.getContainerId(options,function(result_cd,result_msg,extra){
-                    if(result_cd===200){
-                        alert("The container id is " + extra.containerid);
-                    } else {
-                        alert("getContainerId is fail.");
-                    }
-                });
-            }
-
-            function getAuthKey() {
-                var options={};
-                gigagenie.appinfo.getAuthKey(options,function(result_cd,result_msg,extra){
-                    if(result_cd===200){
-                        alert("Key value is " + extra.authkey + ", SetTime value is " + extra.settime +", DueTime value is " + extra.duetime);
-                    } else if(result_cd===404){
-                        alert("Key is not set.");
-                    } else {
-                        alert("getAuthKey is fail.");
-                    }
-                });
-            }
-
-            // var dialog = document.querySelector('dialog'); 
-            // document.querySelector('#show').onclick = function() { 
-            //     dialog.show(); 
-            // }; 
-            // document.querySelector('#close').onclick = function() { 
-            //     dialog.close(); 
-            // }; 
 
         </script>
     </head>
 
     <body onload = init()>
             <!-- <video width="1920" height="1080" controls autoplay="true" >-->
-            <video width="1280" height="720" controls autoplay="true" >
+            <video id="video" width="1280" height="720" controls autoplay="true" >
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
                 <p>Dont play this vedio.</p>
             </video>
+            <input type='submit' value='controleVideo' id='btn_read_text' onclick='controleVideo()'>
 
-            <div>key : 
-                <p id="remoteKey"></p>
-            </div>
-
-            <div>log: <p id="log"></p>
-            </div>
-            <div>발화: <p id="action"></p>
-            </div>
             
     </body>
 </html>
