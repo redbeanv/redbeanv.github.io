@@ -30,9 +30,10 @@
                 //init
                 gigagenie.init(options,function(result_cd, result_msg, extra){
                     if(result_cd === 200){
-                        options.voicemsg = '기가지니 초기화에 성공했습니다.';
-                        gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
-                        });
+                        document.getElementById("video").focus();
+                        // options.voicemsg = '기가지니 초기화에 성공했습니다.';
+                        // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                        // });
                     };
                 });
             }
@@ -93,8 +94,8 @@
 
     <body onload = init()>
         <center>
-            <!-- <video width="1920" height="1080" controls autoplay="true" >-->
-            <video id="video" width="1280" height="720" autoplay="true" onclick="controleVideo()">
+            <video id="video" width="1920" height="1080" autoplay="true" onclick="controleVideo()">
+            <!-- <video id="video" width="1280" height="720" autoplay="true" onclick="controleVideo()"> -->
                 <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
                 <p>Dont play this vedio.</p>
             </video>
