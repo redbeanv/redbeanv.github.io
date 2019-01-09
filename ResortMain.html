@@ -48,9 +48,13 @@
             };
 
             gigagenie.media.onRemoteKeyEvent = function(extra){
-                options.voicemsg = extra.key;
-                gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
-                });
+
+                var keyCode = extra.key;
+                if(keyCode == 'prev') {
+                    prev();
+                } else if (keyCode == 'next') {
+                    next();
+                }
             };
 
             // 비디오 실행 
@@ -97,8 +101,8 @@
             <br>
             <!-- <input type='submit' value='controleVideo' id='btn_read_text' onclick='controleVideo()'> -->
         
-            <input type='submit' value='Prev' id='btn_read_text' onclick='prev()'> 
-            <input type='submit' value='Next' id='btn_read_text' onclick='next()'> 
+            <!-- <input type='submit' value='Prev' id='' onclick='prev()'> 
+            <input type='submit' value='Next' id='' onclick='next()'>  -->
         </center>    
     </body>
 </html>
