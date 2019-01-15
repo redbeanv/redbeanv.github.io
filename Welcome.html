@@ -39,11 +39,10 @@
 
             // 서비스 종료 명령 수신 API
             gigagenie.voice.onRequestClose = function(){
-                options = {};
                 gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
-                    if(result_cd === 200){
-                        console.log('Finish Service');
-                    };
+                    // if(result_cd === 200){
+                    //     console.log('Finish Service');
+                    // };
                 });
             };
 
@@ -55,7 +54,7 @@
     </head>
 
     <body onload = init()>
-        <center>
+        <div style="text-align: center;">
             <p>안녕하세요.</p>
             <p>자연과 문화, 스포츠가 어우러진 꿈의 공간 오크밸리입니다.</p><br>
             
@@ -68,6 +67,6 @@
             <p>즐기세요.</p><br>
 
             <input type="button" id="start" value="시작하기" onclick="goNextPage()">
-        </center>    
+        </div>    
     </body>
 </html>

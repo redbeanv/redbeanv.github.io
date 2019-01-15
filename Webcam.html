@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta http-equiv="Content-Type" Content="text/html; charset=utf-8" />
+        <meta name="viewport" content="height=1080, width=1920, user-scalable=no" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <style type ="text/css">
+            body {
+                background-color: white;
+            }
+
+            * {
+                margin: 0;
+            }
+
+            /* Popup container - can be anything you want */
+            .popup {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            }
+
+            /* The actual popup */
+            .popup .popuptext {
+            visibility: hidden;
+            width: 720px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            left: 50%;
+            margin-left: 300px;
+            margin-top: -270px;
+            }
+
+            /* Toggle this class - hide and show the popup */
+            .popup .show {
+            visibility: visible;
+            -webkit-animation: fadeIn 1s;
+            animation: fadeIn 1s;
+            }
+
+            /* Add animation (fade in the popup) */
+            @-webkit-keyframes fadeIn {
+            from {opacity: 0;} 
+            to {opacity: 1;}
+            }
+
+            @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity:1 ;}
+            }
+        </style>
+            
+        <!-- GIGA Genie js-->   
+        <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
+        <script type="text/javascript">
+            
+            var options = {};
+
+            // GIGA Genie 초기화
+            function init() {
+                options = {};
+                options.apikey = "RTUwMDI1ODB8R0JPWERFVk18MTU0NDY2OTM2MjUwMw==";  //개발자 Api Key
+                options.keytype = "GBOXDEVM";                                     //개발자모드 (GBOXDEVM, GBOXCOMM)
+
+                //init
+                gigagenie.init(options,function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        document.getElementById("video").focus();
+                        // options.voicemsg = '기가지니 초기화에 성공했습니다.';
+                        // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                        // });
+                    };
+                });
+            }
+
+            // 서비스 종료 명령 수신 API
+            gigagenie.voice.onRequestClose = function(){
+                options = {};
+                gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        console.log('Finish Service');
+                    };
+                });
+            };           
+            
+            function changeVideo() {
+                var video = document.getElementById("video");
+                if(options.num == 1) {
+                    options.num = 2;
+                    video.src = "http://media.w3.org/2010/05/sintel/trailer.mp4";
+                } else if (options.num == 2 ) {
+                    options.num = 1;
+                    video.src = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+                }
+                video.play();
+            }
+
+            function popupTest(num) {
+                var popup = document.getElementById("myPopup");
+                var video = document.getElementById("video");
+                popup.classList.toggle("show");
+
+                if(num == 1 ) {
+                    video.src = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+                    options.num = 1;
+                } else if (num == 2) {
+                    video.src = "http://media.w3.org/2010/05/sintel/trailer.mp4";
+                    options.num = 2;
+                }
+
+                if(video.paused){
+                    video.play();
+                    document.getElementById("video").focus();
+                } else {
+                    video.pause();
+                }
+                
+            }
+        </script>
+    </head>
+
+    <body onload = init()>
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1>웹캠 페이지</h1>      
+            </div>
+        </div>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="container">    
+                <div class="row">
+                    <div class="col-sm-4" data-num="1">
+                        <div class="panel panel-primary" onclick="popupTest(1)">
+                            <div class="panel-heading">슬로프</div>
+                            <div class="panel-body">
+                                <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 webcam" data-num="2"> 
+                        <div class="panel panel-danger" onclick="popupTest(2)">
+                            <div class="panel-heading">리조트 전경</div>
+                            <div class="panel-body">
+                                <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="popup">
+            <span class="popuptext" id="myPopup">
+                <video  
+                    id="video" 
+                    width="720" 
+                    height="480"
+                >
+                    <source src="">
+                    <p>Dont play this vedio.</p>
+                </video>
+
+                <div>
+                    <button type="button" class="btn btn-default" onclick="changeVideo()">left</button>
+                    <button type="button" class="btn btn-default" onclick="changeVideo()">right</button>
+                    <button type="button" class="btn btn-default" onclick="popupTest()">Close</button>
+                </div>
+            </span>
+        </div>
+    </body>
+</html>

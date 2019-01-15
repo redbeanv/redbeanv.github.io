@@ -12,15 +12,30 @@
             * {
                 margin: 0;
             }
+            #overlay {
+                position: absolute; 
+                top: 1000px; 
+                left: 200px;
+                color: #FFF; 
+                text-align: center;
+                font-size: 20px;
+                background-color: rgba(221, 221, 221, 0.3);
+                width: 640px;
+                padding: 10px 0;
+                z-index: 2147483647;
+            }
+
+            #video {
+                z-index: 1;
+            }
         </style>
             
         <!-- GIGA Genie js-->   
         <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
 
         <script type="text/javascript">
-            
-            var options = {};
-
+            var options = {};                             // 기가지니 변수
+           
             // GIGA Genie 초기화
             function init() {
                 options = {};
@@ -30,7 +45,7 @@
                 //init
                 gigagenie.init(options,function(result_cd, result_msg, extra){
                     if(result_cd === 200){
-                        document.getElementById("video").focus();
+                        document.getElementById("video").focus(); // 초기화시 비디오에 바로 포커싱
                         // options.voicemsg = '기가지니 초기화에 성공했습니다.';
                         // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
                         // });
@@ -40,50 +55,52 @@
 
             // 서비스 종료 명령 수신 API
             gigagenie.voice.onRequestClose = function(){
-                options = {};
                 gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
-                    if(result_cd === 200){
-                        console.log('Finish Service');
-                    };
                 });
             };
 
+            // 기가지니 리모콘 키 이벤트 (prev, next, sharp(#), asterisk(*))
             gigagenie.media.onRemoteKeyEvent = function(extra){
-
                 var keyCode = extra.key;
                 if(keyCode == 'prev') {
                     prev();
                 } else if (keyCode == 'next') {
                     next();
+                } else if (keyCode == 'sharp') {
+                    goNextPage(); // 다음 페이지로 넘어감
+                } else if (keyCode == '179' && keyCode == 179){
+                    activateVideo();
+                    options.voicemsg = '선택/확인 버튼을 눌렀습니다.';
+                    gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
                 }
             };
 
-            // 비디오 실행 
-            function controleVideo() {
+            // 비디오 실행, 멈춤 제어
+            function activateVideo() {
+                var video = document.getElementById("video"); // 동영상
                 options = {};
 
-                var video = document.getElementById("video");
-
                 if (video.paused) { 
-                    options.voicemsg = '동영상 플레이어를 시작합니다';
-                    gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
+                    // options.voicemsg = '동영상 플레이어를 시작합니다';
+                    // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
                     video.play();
-                }  else { 
-                    options.voicemsg = '동영상 플레이어를 멈춥니다'; 
-                    gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
+                } else if (!video.paused){ 
+                    // options.voicemsg = '동영상 플레이어를 멈춥니다'; 
+                    // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
                     video.pause();
                 }
             }
             
-            function next() {
-                options = {};
+            // 비디오 종료시 이벤트
+            function goNextPage() {
+                location.href = './Main.html';
+            }
 
+            function next() {
                 var video = document.getElementById("video");
                 video.currentTime = video.currentTime + 5;
             }
             function prev() {
-                options = {};
-
                 var video = document.getElementById("video");
                 video.currentTime = video.currentTime - 5;
             }
@@ -93,17 +110,19 @@
     </head>
 
     <body onload = init()>
-        <center>
-            <video id="video" width="1920" height="1080" autoplay="true" onclick="controleVideo()">
-            <!-- <video id="video" width="1280" height="720" autoplay="true" onclick="controleVideo()"> -->
-                <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
-                <p>Dont play this vedio.</p>
-            </video>
-            <br>
-            <!-- <input type='submit' value='controleVideo' id='btn_read_text' onclick='controleVideo()'> -->
-        
-            <!-- <input type='submit' value='Prev' id='' onclick='prev()'> 
-            <input type='submit' value='Next' id='' onclick='next()'>  -->
-        </center>    
+        <!-- video 컨트롤러가 필요할 경우 controls 속성 추가 -->
+        <video  
+            id="video" 
+            width="1920" 
+            height="1080" 
+            autoplay="true" 
+            onclick="activateVideo()"
+            onended="goNextPage()"
+            poster="./poster.jpg"
+        >
+            <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">
+            <p>Dont play this vedio.</p>
+        </video>
+        <div id="overlay"> 리모콘의 #을 누루시면 동영상이 종료됩니다.</div>
     </body>
 </html>

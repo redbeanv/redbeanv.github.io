@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta http-equiv="Content-Type" Content="text/html; charset=utf-8" />
+        <meta name="viewport" content="height=1080, width=1920, user-scalable=no" />
+
+        <style type ="text/css">
+            body {
+                background-color: white;
+            }
+
+            * {
+                margin: 0;
+            }
+        </style>
+            
+        <!-- GIGA Genie js-->   
+        <script type="text/javascript" src="https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            var options = {};                             // 기가지니 변수
+            
+            // GIGA Genie 초기화
+            function init() {
+                options = {};
+                options.apikey = "RTUwMDI1ODB8R0JPWERFVk18MTU0NDY2OTM2MjUwMw==";  //개발자 Api Key
+                options.keytype = "GBOXDEVM";                                     //개발자모드 (GBOXDEVM, GBOXCOMM)
+
+                //init
+                gigagenie.init(options,function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        document.getElementById("video").focus();
+                        // options.voicemsg = '기가지니 초기화에 성공했습니다.';
+                        // gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){
+                        // });
+                    };
+                });
+            }
+
+            // 서비스 종료 명령 수신 API
+            gigagenie.voice.onRequestClose = function(){
+                options = {};
+                gigagenie.voice.svcFinished(options, function(result_cd, result_msg, extra){
+                    if(result_cd === 200){
+                        console.log('Finish Service');
+                    };
+                });
+            };
+
+            function goMain() {
+                location.href = './Main.html';
+            }
+        </script>
+    </head>
+
+    <body onload = init()>
+        <button type="button" onclick="goMain()">메인페이지 돌아가기</button>
+        <div style="text-align:center">
+            <embed src="https://www.oakvalley.co.kr/oak_new/condofood_ski.asp" style="width:100%; height:1906px;"></embed>
+        </div>
+    </body>
+</html>
