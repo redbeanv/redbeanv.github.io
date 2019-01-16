@@ -61,17 +61,17 @@
             // });
 
             // screen 상태를 조회하는 API
-            function screenLimit() {
-                gigagenie.appinfo.getScreenLimit(options,function(result_cd,result_msg,extra){
-                    if(result_cd===200 && extra.limit==true){
-                        options.voicemsg = '스크린 사용이 가능합니다';
-                        gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
-                    } else if(result_cd ===200 && extra.limit==false) {
-                        options.voicemsg = '스크린 사용이 불가능 불가 불가합니다';
-                        gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
-                    }
-                });
-            }
+            // function screenLimit() {
+            //     gigagenie.appinfo.getScreenLimit(options,function(result_cd,result_msg,extra){
+            //         if(result_cd===200 && extra.limit==true){
+            //             options.voicemsg = '스크린 사용이 가능합니다';
+            //             gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
+            //         } else if(result_cd ===200 && extra.limit==false) {
+            //             options.voicemsg = '스크린 사용이 불가능 불가 불가합니다';
+            //             gigagenie.voice.getVoiceText(options, function(result_cd, result_msg, extra){});
+            //         }
+            //     });
+            // }
             
 
             function popupTest() {
